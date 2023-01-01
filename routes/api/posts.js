@@ -112,7 +112,7 @@ router.put('/like/:id', auth, async(req, res) => {
     }
 })
 
-// @path /api/posts/unlike/:id
+// @path PUT /api/posts/unlike/:id
 // @desc Remove like from a post
 // @access Private
 router.put('/unlike/:id', auth, async(req, res) => {
@@ -124,11 +124,69 @@ router.put('/unlike/:id', auth, async(req, res) => {
         }
 
         post.likes = post.likes.filter(like => like.user.toString() !== req.user.id)
-        post.save()
+        await post.save()
         res.json(post.likes)
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')        
+    }
+})
+
+// @oath POST /api/posts/comment/:id
+// @desc Add a comment
+// @access Private
+router.post('/comment/:id', [auth, [
+    check('text', 'Text is required').not().isEmpty()
+]], async(req, res) => {
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors: errors.array()})
+    }
+    try {
+        const post = await Post.findById(req.params.id)
+        const user = await User.findById(req.user.id).select('-password')
+        const comment = {
+            user: req.user.id,
+            text: req.body.text,
+            name: user.name,
+            avatar: req.user.avatar,
+        }
+
+        post.comments.unshift(comment)
+        await post.save()
+        res.json(post.comments)
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send('Server Error')
+    }
+})
+
+// @route DELETE /api/posts/comment/:id/:comment_id
+// @desc Remove a comment
+// @access Private
+router.delete('/comment/:id/:comment_id', auth, async(req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+        const comment = post.comments.find(comment => comment.id === req.params.comment_id)
+
+        // Check if comment exists
+        if(!comment){
+            return res.status(404).json({msg: 'Comment does not exist'})
+        }
+
+        // Check if logged in user is the author of the comment
+        if(comment.user.toString() !== req.user.id){
+            return res.status(401).json({msg: 'User unathorized'})
+        }
+
+        const commentIndex = post.comments.map(comment => comment.id.toString()).indexOf(req.params.comment_id)
+        post.comments.splice(commentIndex, 1)
+        await post.save()
+        res.json(post.comments)
+
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send('Server Error')
     }
 })
 
