@@ -5,8 +5,12 @@ import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import './App.css';
+// Redux
+import {Provider} from 'react-redux'
+import store from './store'
 
 const App = () => 
+<Provider store={store}>
   <Router>
     <Fragment>
       <Navbar />
@@ -21,5 +25,6 @@ const App = () =>
       </section>
     </Fragment>
   </Router>
+</Provider>
 
 export default App;
