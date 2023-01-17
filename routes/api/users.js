@@ -45,7 +45,6 @@ router.post('/', [
         // Save user in database
         await user.save()
 
-        // TODO return jsonwebtoken
         const payload = {
             user: {
                 id: user.id
