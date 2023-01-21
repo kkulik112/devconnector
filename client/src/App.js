@@ -5,6 +5,7 @@ import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import Alert from './components/layout/Alert'
 import Dashboard from './components/dashboard/Dashboard'
+import CreateProfile from './components/profile-forms/CreateProfile'
 import PrivateRoute from './components/routing/PrivateRoute'
 import setAuthToken from './utils/setAuthToken'
 import { loadUser } from './actions/auth'
@@ -40,6 +41,10 @@ const App = () => {
             <Route
             path="dashboard"
             element={<PrivateRoute component={Dashboard} />}
+          />
+            <Route
+            path="create-profile"
+            element={<PrivateRoute component={CreateProfile} />}
           />
           </Routes>
         </section>
