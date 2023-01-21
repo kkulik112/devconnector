@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {Route, Redirect, Navigate, useLocation} from 'react-router-dom'
 import {connect} from 'react-redux'
+import Spinner from '../layout/Spinner'
 
 
 const PrivateRoute = ({
     component: Component,
     auth: { isAuthenticated, loading }
   }) => {
-    if (isAuthenticated && !loading) return <Component />;
+    if(loading) return <Spinner />
+    if (isAuthenticated) return <Component />;
   
     return <Navigate to="/login" />;
   }
