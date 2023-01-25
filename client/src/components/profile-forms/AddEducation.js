@@ -5,7 +5,8 @@ import PropTypes from 'prop-types'
 import { addEducation } from '../../actions/profile'
 
 const AddEducation = ({addEducation}) => {
-
+    const navigate = useNavigate()
+  
     const [formData, setFormData] = useState({
         school: '',
         degree: '',
@@ -20,7 +21,6 @@ const AddEducation = ({addEducation}) => {
     const {school, degree, fieldOfStudy, from, to, current, description} = formData
 
     const onChange = e => setFormData({...formData, [e.target.name]: e.target.value})
-    const navigate = useNavigate()
     return (
         <Fragment>
             <h1 className="large text-primary">Add An Education</h1>
@@ -31,8 +31,8 @@ const AddEducation = ({addEducation}) => {
       <form
         className="form"
         onSubmit={(e) => {
-          e.preventDefault();
-          addEducation(formData, navigate);
+          e.preventDefault()
+          addEducation(formData, navigate)
         }}
       >
         <div className="form-group">

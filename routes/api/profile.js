@@ -79,13 +79,13 @@ router.post('/', [auth, [
         if(profile){
             // Update
             profile = await Profile.findOneAndUpdate({user: req.user.id}, {$set: profileFields}, {new: true})
-            return res.json({profile})
+            return res.json(profile)
         }
 
         // Create
         profile = new Profile(profileFields)
         await profile.save()
-        return res.json({profile})
+        return res.json(profile)
     }catch(err){
         console.error(err.message)
         res.status(500).send('Server Error')
@@ -98,7 +98,7 @@ router.post('/', [auth, [
 router.get('/', async (req, res) => {
     try {
         const profiles = await Profile.find().populate('user', ['name', 'avatar'])
-        res.json({profiles})
+        res.json(profiles)
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
@@ -112,7 +112,7 @@ router.get('/user/:user_id', async (req, res) => {
     try {
         const profile = await Profile.findOne({user: req.params.user_id}).populate('user', ['name', 'avatar'])
         if(!profile) return res.status(400).json({msg: 'Profile not found'})
-        res.json({profile})
+        res.json(profile)
     } catch (err) {
         console.error(err.message)
         // Check error type to handle invalid user_id
@@ -176,7 +176,7 @@ router.put('/experience', [auth, [
         const profile = await Profile.findOne({user: req.user.id})
         profile.experience.unshift(newExp)
         await profile.save()
-        res.json({profile})
+        res.json(profile)
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
@@ -192,7 +192,7 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
 
         profile.experience = profile.experience.filter(exp => exp.id !== req.params.exp_id)
         await profile.save()
-        res.json({profile})
+        res.json(profile)
 
     } catch (err) {
         console.error(err.message)
@@ -237,7 +237,7 @@ router.put('/education', [auth, [
         const profile = await Profile.findOne({user: req.user.id})
         profile.education.unshift(newEdu)
         await profile.save()
-        res.json({profile})
+        res.json(profile)
     } catch (err) {
         console.error(err.message)
         res.status(500).send('Server Error')
@@ -253,7 +253,7 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
 
         profile.education = profile.education.filter(edu => edu.id !== req.params.edu_id)
         await profile.save()
-        res.json({profile})
+        res.json(profile)
 
     } catch (err) {
         console.error(err.message)
