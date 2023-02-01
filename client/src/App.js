@@ -16,7 +16,7 @@ import PrivateRoute from './components/routing/PrivateRoute'
 import setAuthToken from './utils/setAuthToken'
 import { loadUser } from './actions/auth'
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
-import './App.css';
+import './App.css'
 // Redux
 import {Provider} from 'react-redux'
 import store from './store'
