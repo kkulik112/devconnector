@@ -5,6 +5,8 @@ import {Link, useParams} from 'react-router-dom'
 import { getPost } from '../../actions/post'
 import {connect} from 'react-redux'
 import PostItem from '../posts/PostItem'
+import CommentForm from './CommentForm'
+import CommentItem from './CommentItem'
 
 const Post = ({getPost, post: {post, loading}}) => {
     const {id} = useParams()
@@ -14,7 +16,10 @@ const Post = ({getPost, post: {post, loading}}) => {
 
     return loading || post === null ? <Spinner/> : <Fragment>
             <Link to="/posts" className='btn'>Back To Posts</Link>
-            <PostItem post={post} showActions={false} />        
+            <PostItem post={post} showActions={false}/>        
+            <CommentForm postId={id} />
+            {post.comments.map(comment => <CommentItem key={comment._id} comment={comment} postId={id}/>)}
+
         </Fragment>
 }
 

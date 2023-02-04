@@ -14,7 +14,7 @@ const PostItem = ({auth, post: {_id, user, text, name, avatar, likes, comments, 
               <img
                 className="round-img"
                 src={avatar}
-                alt="user's avatar"
+                alt="avatar"
               />
               <h4>{name}</h4>
             </Link>
