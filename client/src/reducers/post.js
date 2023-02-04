@@ -50,7 +50,7 @@ export default function(state=initialState, action) {
         case REMOVE_COMMENT:
             return {
                 ...state,
-                post: {...state.posts, comments: state.post.comments.filter(post => post._id !== payload)},                    
+                post: {...state.post, comments: state.post.comments.filter(post => post._id !== payload)},                    
                 loading: false
             }
         case UPDATE_LIKES:
